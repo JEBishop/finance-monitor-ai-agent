@@ -45,8 +45,7 @@ try {
     async ({ researchRequest: researchRequest }) => {
       setContextVariable("researchRequest", researchRequest);
       const modelResponse = await agent.invoke({
-        messages: [new HumanMessage({
-          content:`
+        messages: [new HumanMessage(`
           You are an expert financial analyst. You are tasked with helping a client perform financial research.
           The current date is ${(new Date()).toLocaleDateString()}
 
@@ -65,7 +64,7 @@ try {
             - Include some relevant news that could be impacting the price action.
             - !IMPORTANT! Only comment on things that are relevant to the user's request (timeframe, ticker, etc.)
             - Output this in the form of a JSON object and stop any further processing.
-        `})]
+        `)]
       }, {
         recursionLimit: 10
       });
