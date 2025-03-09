@@ -1,0 +1,41 @@
+{
+    "name": "ts-start",
+    "version": "0.0.1",
+    "type": "module",
+    "description": "This is an example of an Apify actor.",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "apify": "^3.2.6",
+        "axios": "^1.5.0",
+        "cheerio": "^1.0.0-rc.12",
+        "rss-parser": "^3.13.0",
+        "openai": "^4.86.1",
+        "pdf-parse": "^1.1.1",
+        "zod": "^3.24.2",
+        "yahoo-stock-api": "^2.2.1",
+        "@langchain/openai": "^0.4.4",
+        "langchain": "^0.3.19",
+        "@langchain/langgraph": "^0.2.53",
+        "@langchain/core": "^0.3.42"
+    },
+    "devDependencies": {
+        "@apify/eslint-config-ts": "^0.3.0",
+        "@apify/tsconfig": "^0.1.0",
+        "@typescript-eslint/eslint-plugin": "^7.18.0",
+        "@typescript-eslint/parser": "^7.18.0",
+        "eslint": "^8.50.0",
+        "tsx": "^4.6.2",
+        "typescript": "^5.3.3"
+    },
+    "scripts": {
+        "start": "npm run start:dev",
+        "start:prod": "node dist/main.js",
+        "start:dev": "tsx src/main.ts",
+        "build": "tsc",
+        "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+    },
+    "author": "It's not you it's me",
+    "license": "ISC"
+}

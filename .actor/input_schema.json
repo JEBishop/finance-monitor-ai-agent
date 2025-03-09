@@ -1,0 +1,21 @@
+{
+    "title": "Finance Monitoring AI Agent",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "researchRequest": {
+            "title": "Research Request",
+            "type": "string",
+            "description": "Your financial research request",
+            "editor": "textfield",
+            "prefill": "How are bitcoin and microsoft doing this week?"
+        },
+        "OPENAI_API_KEY": {
+            "title": "OpenAI API Key",
+            "type": "string",
+            "description": "The API key to use for prompting ChatGPT.",
+            "editor": "textfield"
+        }
+    },
+    "required": ["OPENAI_API_KEY", "researchRequest"]
+}
