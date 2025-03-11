@@ -58,6 +58,7 @@ try {
 
           STEP 2: Gather stock quote date:
           - Retrieve stock quote data using the get_ticker_details tool.
+          - Search the web for news related to the company.
 
           STEP 3: Parse the results:
             - Create a 7-8 sentence overview answering the user's request.
