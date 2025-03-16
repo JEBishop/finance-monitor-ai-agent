@@ -8,7 +8,7 @@
             "type": "string",
             "description": "Your financial research request",
             "editor": "textfield",
-            "prefill": "How are bitcoin and microsoft doing this week?"
+            "prefill": "How is microsoft doing this week?"
         },
         "OPENAI_API_KEY": {
             "title": "OpenAI API Key",
