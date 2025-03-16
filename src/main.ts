@@ -80,8 +80,6 @@ try {
     json: output
   }
 
-  await Actor.charge({ eventName: 'tickers-output', count: JSON.stringify(formattedOutput).length/100 });
-
   await Actor.pushData(formattedOutput);
 } catch (err: any) {
   log.error(err);
