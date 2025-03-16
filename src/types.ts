@@ -7,6 +7,7 @@ export interface Report {
   results: { summaryDetail: SummaryDetail; price: Price };
   chart: Chart;
   news: News[];
+  ticker: string;
 }
 
 export const responseSchema = {
@@ -95,9 +96,12 @@ export const responseSchema = {
               },
               required: ["uuid", "title", "publisher", "link", "providerPublishTime", "type"]
           }
+      },
+      ticker: {
+        type: "string"
       }
   },
-  required: ["results", "chart", "news"]
+  required: ["results", "chart", "news", "ticker"]
 };
 
 interface SummaryDetail {

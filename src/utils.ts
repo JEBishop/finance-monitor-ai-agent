@@ -2,36 +2,36 @@ import type { Report } from './types.js'
 
 export const generateMarketReport = (data: Report) => {
   // Extract symbol from the data
-  const symbol = data.chart.meta.symbol;
+  const symbol = data?.ticker;
 
   // Extract price data
-  const currentPrice = data.results.price.regularMarketPrice;
-  const priceChange = data.results.price.regularMarketChange;
-  const percentChange = data.results.price.regularMarketChangePercent;
+  const currentPrice = data?.results?.price?.regularMarketPrice;
+  const priceChange = data?.results?.price?.regularMarketChange;
+  const percentChange = data?.results?.price?.regularMarketChangePercent;
   
   // Extract other metrics
-  const marketCap = data.results.price.marketCap;
-  const fiftyTwoWeekLow = data.results.summaryDetail.fiftyTwoWeekLow;
-  const fiftyTwoWeekHigh = data.results.summaryDetail.fiftyTwoWeekHigh;
-  const trailingPE = data.results.summaryDetail.trailingPE;
-  const dividendRate = data.results.summaryDetail.dividendRate;
-  const dividendYield = data.results.summaryDetail.dividendYield * 100;
-  const beta = data.results.summaryDetail.beta;
-  const volume = data.results.price.volume;
+  const marketCap = data?.results?.price?.marketCap;
+  const fiftyTwoWeekLow = data?.results?.summaryDetail?.fiftyTwoWeekLow;
+  const fiftyTwoWeekHigh = data?.results?.summaryDetail?.fiftyTwoWeekHigh;
+  const trailingPE = data?.results?.summaryDetail?.trailingPE;
+  const dividendRate = data?.results?.summaryDetail?.dividendRate;
+  const dividendYield = data?.results?.summaryDetail?.dividendYield * 100;
+  const beta = data?.results?.summaryDetail?.beta;
+  const volume = data?.results?.price?.volume;
   
-  const quotes = data.chart.quotes;
-  const startDate = new Date(quotes?.[0].date);
-  const endDate = new Date(quotes?.[quotes.length - 1].date);
+  const quotes = data?.chart?.quotes;
+  const startDate = new Date(quotes?.[0]?.date);
+  const endDate = new Date(quotes?.[quotes?.length - 1]?.date);
   
   const formatDate = (date: Date) => {
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return `${date?.getMonth() + 1}/${date?.getDate()}/${date?.getFullYear()}`;
   };
   
   const dateRange = `${formatDate(startDate)} - ${formatDate(endDate)}`;
   
-  const newsItems = data.news.map((item: any) => {
-    return `<li>${item.title}</li>`;
-  }).join('');
+  const newsItems = data?.news?.map((item: any) => {
+    return `<li>${item?.title}</li>`;
+  })?.join('');
   
   const html = `
     <!DOCTYPE html>
@@ -65,10 +65,10 @@ export const generateMarketReport = (data: Report) => {
       <h2>${dateRange}</h2>
       <h3>Price Movement</h3>
       <ul>
-        <li>Starting Price: $${quotes?.[0].close}</li>
+        <li>Starting Price: $${quotes?.[0]?.close}</li>
         <li>Closing Price: $${currentPrice}</li>
         <li>Change: ${priceChange >= 0 ? 'up' : 'down'} ${priceChange} (${percentChange}%)</li>
-        <li>Trading Volume: ${data.results.price.volume || 'N/A'}</li>
+        <li>Trading Volume: ${data?.results?.price?.volume || 'N/A'}</li>
       </ul>
       <h3>Key Headlines</h3>
       <ul>
@@ -87,5 +87,5 @@ export const generateMarketReport = (data: Report) => {
     </html>
   `;
   
-  return html.replace(/\n/g, '');
+  return html?.replace(/\n/g, '');
 };
