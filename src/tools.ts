@@ -15,13 +15,12 @@ const getTickerDetailsTool = tool(
     try {
       const tickerPromises = input.tickers.map(async (ticker) => {
         // harvest/yahoo-finance-scraper
-        const run = await client.actor('ePrlj3ncTVblYLYzQ').call({
+        const run = await client.actor('WcaJxyaQoz7dJhRUX').call({
           ticker: ticker.ticker,
           startDate: ticker.startDate,
           endDate: ticker.endDate
         });
         const { items: tickerQuotes } = await client.dataset(run.defaultDatasetId).listItems();
-      
         log.info(`Found ${tickerQuotes.length} quotes for ${ticker.ticker}.`);
         return tickerQuotes;
       });

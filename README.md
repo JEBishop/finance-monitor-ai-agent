@@ -1,86 +1,166 @@
-## Scrape single-page in TypeScript template
+# AI Finance Monitor - Apify Actor
 
-A template for scraping data from a single web page in TypeScript (Node.js). The URL of the web page is passed in via input, which is defined by the [input schema](https://docs.apify.com/platform/actors/development/input-schema). The template uses the [Axios client](https://axios-http.com/docs/intro) to get the HTML of the page and the [Cheerio library](https://cheerio.js.org/) to parse the data from it. The data are then stored in a [dataset](https://docs.apify.com/sdk/js/docs/guides/result-storage#dataset) where you can easily access them.
+## Overview
+The AI Finance Monitor is an Apify Actor designed to generate market reports based on user queries. By inputting a search query such as "How is Microsoft doing this week?", the actor fetches relevant financial data, analyzes it, and produces a structured market summary.
 
-The scraped data in this template are page headings but you can easily edit the code to scrape whatever you want from the page.
+## Features
+- **Market Summary**: Provides a high-level overview of stock performance.
+- **Price Movement**: Includes starting and closing prices, percentage changes, and trading volume.
+- **Key Headlines**: Fetches and summarizes the latest news related to the searched company.
+- **Market Metrics**: Reports important financial metrics like market capitalization, P/E ratio, and beta.
+- **Automated Report Generation**: Outputs a structured summary in a user-friendly format.
 
-## Included features
+## Input
+The actor takes a single search query as input:
+```json
+{
+    "OPENAI_API_KEY": "", //optional
+    "researchRequest": "How is microsoft doing this week?"
+}
+```
 
-- **[Apify SDK](https://docs.apify.com/sdk/js/)** - a toolkit for building [Actors](https://apify.com/actors)
-- **[Input schema](https://docs.apify.com/platform/actors/development/input-schema)** - define and easily validate a schema for your Actor's input
-- **[Dataset](https://docs.apify.com/sdk/js/docs/guides/result-storage#dataset)** - store structured data where each object stored has the same attributes
-- **[Axios client](https://axios-http.com/docs/intro)** - promise-based HTTP Client for Node.js and the browser
-- **[Cheerio](https://cheerio.js.org/)** - library for parsing and manipulating HTML and XML
+## Output
+The actor produces two outputs:
+- JSON data output of the raw data
+- HTML human-readable report 
 
-## How it works
+## Html Output
+![Sample HTML Report](sample_report.png)
 
-1. `Actor.getInput()` gets the input where the page URL is defined
-2. `axios.get(url)` fetches the page
-3. `cheerio.load(response.data)` loads the page data and enables parsing the headings
-4. This parses the headings from the page and here you can edit the code to parse whatever you need from the page
-    
-    ```javascript
-    $("h1, h2, h3, h4, h5, h6").each((_i, element) => {...});
-    ```
-    
-5. `Actor.pushData(headings)` stores the headings in the dataset
+## JSON Output
+The output is a JSON object containing:
+```json
+{
+		"results": {
+			"price": {
+				"regularMarketPrice": 388.56,
+				"previousClose": 378.77,
+				"dayLow": 379.51,
+				"dayHigh": 389.79,
+				"open": 379.92,
+				"volume": 19749136,
+				"marketCap": 2888547172352,
+				"trailingPE": 31.34,
+				"forwardPE": 25.99,
+				"dividendRate": 3.32,
+				"dividendYield": 0.0085,
+				"exDividendDate": "2025-05-15",
+				"fiftyTwoWeekLow": 376.91,
+				"fiftyTwoWeekHigh": 468.35
+			},
+			"summaryDetail": {
+				"shortName": "Microsoft Corporation",
+				"longName": "Microsoft Corporation",
+				"currency": "USD",
+				"beta": 0.914
+			}
+		},
+		"chart": {
+			"meta": {
+				"currency": "USD",
+				"symbol": "MSFT",
+				"exchangeName": "NMS",
+				"fullExchangeName": "NasdaqGS",
+				"instrumentType": "EQUITY",
+				"firstTradeDate": "1986-03-13T14:30:00.000Z",
+				"regularMarketTime": "2025-03-14T20:00:01.000Z",
+				"hasPrePostMarketData": true
+			},
+			"quotes": [
+				{
+					"date": "2025-03-10T13:30:00.000Z",
+					"high": 386.39,
+					"low": 377.22,
+					"open": 385.84,
+					"close": 380.16,
+					"volume": 32840100
+				},
+				{
+					"date": "2025-03-11T13:30:00.000Z",
+					"high": 386,
+					"low": 376.91,
+					"open": 379,
+					"close": 380.45,
+					"volume": 30380200
+				},
+				{
+					"date": "2025-03-12T13:30:00.000Z",
+					"high": 385.22,
+					"low": 378.95,
+					"open": 382.95,
+					"close": 383.27,
+					"volume": 24253600
+				},
+				{
+					"date": "2025-03-13T13:30:00.000Z",
+					"high": 385.32,
+					"low": 377.45,
+					"open": 383.16,
+					"close": 378.77,
+					"volume": 20473000
+				},
+				{
+					"date": "2025-03-14T13:30:00.000Z",
+					"high": 390.23,
+					"low": 379.51,
+					"open": 379.78,
+					"close": 388.56,
+					"volume": 19929300
+				}
+			],
+			"events": {
+				"dividends": [
+					{
+						"date": 1684108800,
+						"amount": 3.32
+					}
+				]
+			},
+			"priceHint": 2
+		},
+		"news": [
+			{
+				"uuid": "a779f012-c27d-35ae-a9e9-29dd5c5ee6b4",
+				"title": "Is Microsoft Corp. (MSFT) the Best QQQ Stock to Invest in Now?",
+				"publisher": "Insider Monkey",
+				"link": "https://finance.yahoo.com/news/microsoft-corp-msft-best-qqq-025150139.html",
+				"providerPublishTime": "2025-03-16T02:51:50.000Z",
+				"type": "STORY",
+				"thumbnail": {
+					"resolutions": [
+						{
+							"url": "https://s.yimg.com/uu/api/res/1.2/FPV7LMJx9t7xViBmxMrZWw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9",
+							"width": 1456,
+							"height": 816,
+							"tag": "original"
+						},
+						{
+							"url": "https://s.yimg.com/uu/api/res/1.2/snE9DwM_Mhbq41k5r0NVHA--~B/Zmk9ZmlsbDtoPTE0MDtweW9mZj0wO3c9MTQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/ae3cb2a93ad8e5ddf6f94148e71f74b9",
+							"width": 140,
+							"height": 140,
+							"tag": "140x140"
+						}
+					]
+				}
+			}
+		]
+}
+```
 
-## Resources
+## Usage
+1. Deploy the actor on Apify.
+2. Provide a search query as input.
+3. The actor retrieves, processes, and returns a structured market summary.
 
-- [Web scraping in Node.js with Axios and Cheerio](https://blog.apify.com/web-scraping-with-axios-and-cheerio/)
-- [Web scraping with Cheerio in 2023](https://blog.apify.com/web-scraping-with-cheerio/)
-- [Video tutorial](https://www.youtube.com/watch?v=yTRHomGg9uQ) on building a scraper using CheerioCrawler
-- [Written tutorial](https://docs.apify.com/academy/web-scraping-for-beginners/challenge) on building a scraper using CheerioCrawler
-- [Integration with Zapier](https://apify.com/integrations), Make, Google Drive, and others
-- [Video guide on getting scraped data using Apify API](https://www.youtube.com/watch?v=ViYYDHSBAKM)
-- A short guide on how to build web scrapers using code templates:
+## Limitations
+- Some financial data may be unavailable or labeled as "undefined" if not accessible at runtime.
+- News headlines are fetched from external sources and may vary in availability.
 
-[web scraper template](https://www.youtube.com/watch?v=u-i-Korzf8w)
+## Future Enhancements
+- Improve data accuracy by integrating with multiple financial APIs.
+- Support for historical comparisons and trend analysis.
+- Extend coverage to cryptocurrencies and commodities.
 
+## License
+This project is licensed under the MIT License.
 
-
-## Getting started
-
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-at-apify-console). In short, you will:
-
-1. Build the Actor
-2. Run the Actor
-
-## Pull the Actor for local development
-
-If you would like to develop locally, you can pull the existing Actor from Apify console using Apify CLI:
-
-1. Install `apify-cli`
-
-    **Using Homebrew**
-
-    ```bash
-    brew install apify-cli
-    ```
-
-    **Using NPM**
-
-    ```bash
-    npm -g install apify-cli
-    ```
-
-2. Pull the Actor by its unique `<ActorId>`, which is one of the following:
-    - unique name of the Actor to pull (e.g. "apify/hello-world")
-    - or ID of the Actor to pull (e.g. "E2jjCZBezvAZnX8Rb")
-
-    You can find both by clicking on the Actor title at the top of the page, which will open a modal containing both Actor unique name and Actor ID.
-
-    This command will copy the Actor into the current directory on your local machine.
-
-    ```bash
-    apify pull <ActorId>
-    ```
-
-## Documentation reference
-
-To learn more about Apify and Actors, take a look at the following resources:
-
-- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
-- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
-- [Apify Platform documentation](https://docs.apify.com/platform)
-- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
