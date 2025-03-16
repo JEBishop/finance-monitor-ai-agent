@@ -73,14 +73,11 @@ try {
 
   const output: Report = await handleRunTimeRequestRunnable.invoke({ researchRequest: researchRequest });
 
+  await Actor.setValue('market_report.html', generateMarketReport(output), { contentType: 'text/html' });
+
   log.info(JSON.stringify(output));
 
-  const formattedOutput = {
-    html: generateMarketReport(output),
-    json: output
-  }
-
-  await Actor.pushData(formattedOutput);
+  await Actor.pushData(output);
 } catch (err: any) {
   log.error(err);
   await Actor.pushData({ error: err.message });

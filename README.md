@@ -20,6 +20,7 @@ The actor takes a single search query as input:
 ```
 
 ## Output
+### Be sure to check the "Storage > Key-value store output tab for the HTML/MD report files.
 The actor produces two outputs:
 - JSON data output of the raw data
 - HTML human-readable report 
