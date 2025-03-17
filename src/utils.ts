@@ -5,19 +5,20 @@ export const generateMarketReport = (data: Report) => {
   const symbol = data?.ticker;
 
   // Extract price data
-  const currentPrice = data?.results?.price?.regularMarketPrice;
-  const priceChange = data?.results?.price?.regularMarketChange;
-  const percentChange = data?.results?.price?.regularMarketChangePercent;
+  const currentPrice = data?.results?.summaryDetail?.regularMarketPrice ?? data?.results?.price?.regularMarketPrice;
+  const previousClose = data?.results?.summaryDetail?.previousClose ?? data?.results?.price?.regularMarketPreviousClose;
+  const priceChange = data?.results?.price?.regularMarketChange ?? data?.results?.summaryDetail?.regularMarketChange;
+  const percentChange = data?.results?.price?.regularMarketChangePercent ?? data?.results?.summaryDetail?.regularMarketChangePercent;
   
   // Extract other metrics
-  const marketCap = data?.results?.price?.marketCap;
-  const fiftyTwoWeekLow = data?.results?.summaryDetail?.fiftyTwoWeekLow;
-  const fiftyTwoWeekHigh = data?.results?.summaryDetail?.fiftyTwoWeekHigh;
-  const trailingPE = data?.results?.summaryDetail?.trailingPE;
-  const dividendRate = data?.results?.summaryDetail?.dividendRate;
-  const dividendYield = data?.results?.summaryDetail?.dividendYield * 100;
-  const beta = data?.results?.summaryDetail?.beta;
-  const volume = data?.results?.price?.volume;
+  const marketCap = data?.results?.summaryDetail?.marketCap ?? data?.results?.price?.marketCap;
+  const fiftyTwoWeekLow = data?.results?.summaryDetail?.fiftyTwoWeekLow ?? data?.results?.price?.fiftyTwoWeekLow;
+  const fiftyTwoWeekHigh = data?.results?.summaryDetail?.fiftyTwoWeekHigh ?? data?.results?.price?.fiftyTwoWeekHigh;
+  const trailingPE = data?.results?.summaryDetail?.trailingPE ?? data?.results?.price?.trailingPE;
+  const dividendRate = data?.results?.summaryDetail?.dividendRate ?? data?.results?.price?.dividendRate;
+  const dividendYield = (data?.results?.summaryDetail?.dividendYield ?? data?.results?.price?.dividendYield) * 100;
+  const beta = data?.results?.summaryDetail?.beta ?? data?.results?.price?.beta;
+  const volume = data?.results?.summaryDetail?.volume ?? data?.results?.price?.volume;
   
   const quotes = data?.chart?.quotes;
   const startDate = new Date(quotes?.[0]?.date);
@@ -30,7 +31,7 @@ export const generateMarketReport = (data: Report) => {
   const dateRange = `${formatDate(startDate)} - ${formatDate(endDate)}`;
   
   const newsItems = data?.news?.map((item: any) => {
-    return `<li>${item?.title}</li>`;
+    return `<li><a href='${item.link}' target='_blank'>${item?.title}</a></li>`;
   })?.join('');
   
   const html = `
@@ -66,9 +67,10 @@ export const generateMarketReport = (data: Report) => {
       <h3>Price Movement</h3>
       <ul>
         <li>Starting Price: $${quotes?.[0]?.close}</li>
-        <li>Closing Price: $${currentPrice}</li>
+        <li>Current Price: $${currentPrice}</li>
+        <li>Previous Closing Price: $${previousClose}</li>
         <li>Change: ${priceChange >= 0 ? 'up' : 'down'} ${priceChange} (${percentChange}%)</li>
-        <li>Trading Volume: ${data?.results?.price?.volume || 'N/A'}</li>
+        <li>Trading Volume: ${volume}</li>
       </ul>
       <h3>Key Headlines</h3>
       <ul>
@@ -79,8 +81,8 @@ export const generateMarketReport = (data: Report) => {
         <li>Market Cap: ${marketCap}</li>
         <li>52-Week Range: $${fiftyTwoWeekLow} - $${fiftyTwoWeekHigh}</li>
         <li>P/E Ratio: ${trailingPE}</li>
-        <li>Dividend Yield: ${dividendYield}%</li>
-        <li>Beta: ${beta}</li>
+        <li>Dividend Rate: ${dividendRate}%</li>
+        <li>Dividend Yield: ${dividendYield.toFixed(2)}%</li>
       </ul>
       <div class='report-footer'>Report generated on ${formatDate(new Date())}</div>
     </body>

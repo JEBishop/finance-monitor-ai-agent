@@ -107,10 +107,13 @@ export const responseSchema = {
 interface SummaryDetail {
   maxAge: number;
   priceHint: number;
+  regularMarketPrice: number;
   previousClose: number;
   open: number;
   dayLow: number;
   dayHigh: number;
+  regularMarketChange: number;
+  regularMarketChangePercent: number;
   regularMarketPreviousClose: number;
   regularMarketOpen: number;
   regularMarketDayLow: number;
@@ -146,11 +149,18 @@ interface SummaryDetail {
 interface Price {
   maxAge: number;
   volume: string;
+  regularMarketPreviousClose: number;
   preMarketSource: string;
   postMarketChangePercent: number;
   postMarketChange: number;
   postMarketTime: string;
+  fiftyTwoWeekLow: number;
+  fiftyTwoWeekHigh: number;
   postMarketPrice: number;
+  trailingPE: number;
+  dividendRate: number;
+  dividendYield: number;
+  beta: number;
   regularMarketChangePercent: number;
   regularMarketChange: number;
   regularMarketTime: string;

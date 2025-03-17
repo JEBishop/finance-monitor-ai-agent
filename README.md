@@ -26,7 +26,7 @@ The actor produces two outputs:
 - HTML human-readable report 
 
 ## Html Output
-![Sample HTML Report](sample_report.png)
+![Sample HTML Report](https://raw.githubusercontent.com/JEBishop/finance-monitor-ai-agent/main/sample_report.png)
 
 ## JSON Output
 The output is a JSON object containing:
